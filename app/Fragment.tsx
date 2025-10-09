@@ -5,9 +5,10 @@ import PuzzleEngine from './PuzzleEngine';
 
 type Props = {
   emotion: string;
+  onRestore: (entry: string) => void;
 };
 
-export default function Fragment({ emotion }: Props) {
+export default function Fragment({ emotion, onRestore }: Props) {
   const [restored, setRestored] = useState(false);
   const [choice, setChoice] = useState<string | null>(null);
 
@@ -17,8 +18,10 @@ export default function Fragment({ emotion }: Props) {
         <PuzzleEngine
           emotion={emotion}
           onSolve={(selectedWord) => {
+            const entry = `Restored fragment in ${emotion}: "${selectedWord}"`;
             setChoice(selectedWord);
             setRestored(true);
+            onRestore(entry);
           }}
         />
       ) : (
