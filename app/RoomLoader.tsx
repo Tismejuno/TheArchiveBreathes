@@ -2,6 +2,9 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import Fragment from './Fragment';
 import Solace from './Solace';
+import UIOverlay from './UIOverlay';
+
+<UIOverlay journalEntries={["Restored fragment in Sadness: 'silence'"]} />
 
 type Props = {
   emotion: string;
