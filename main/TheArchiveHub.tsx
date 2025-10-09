@@ -10,7 +10,7 @@ import XPTracker from '../app/XPTracker';
 import CurrencyEngine from '../app/CurrencyEngine';
 import AmbientEngine from '../app/AmbientEngine';
 import EchoCompanion from '../app/EchoCompanion';
-import JournalSkinEngine from '../app/JournalSkinEngine'; // ✅ New import
+import JournalSkinEngine from '../app/JournalSkinEngine';
 
 const emotions = ['Sadness', 'Inspiration', 'Numbness', 'Hope'];
 
@@ -46,6 +46,10 @@ export default function TheArchiveHub() {
     setJournal((prev) => [...prev, entry]);
   };
 
+  const handleReturnToHub = () => {
+    setCurrentView(null);
+  };
+
   const level = Math.floor(xp / 100) + 1;
 
   return (
@@ -66,24 +70,42 @@ export default function TheArchiveHub() {
           <CurrencyEngine coins={coins} />
           <AmbientEngine upgrades={upgrades} />
           <EchoCompanion journalEntries={journal} upgrades={upgrades} emotion={currentView} />
-          <JournalSkinEngine journalEntries={journal} upgrades={upgrades} /> {/* ✅ Styled journal */}
+          <JournalSkinEngine journalEntries={journal} upgrades={upgrades} />
         </>
       ) : currentView === 'Cafe' ? (
-        <CafeStation emotion="Comfort" onServe={handleServe} />
+        <View>
+          <CafeStation emotion="Comfort" onServe={handleServe} />
+          <Button title="🔙 Return to Hub" onPress={handleReturnToHub} />
+        </View>
       ) : currentView === 'Burger' ? (
-        <BurgerStation emotion="Hope" onServe={handleServe} />
+        <View>
+          <BurgerStation emotion="Hope" onServe={handleServe} />
+          <Button title="🔙 Return to Hub" onPress={handleReturnToHub} />
+        </View>
       ) : currentView === 'Shop' ? (
-        <UpgradeShop coins={coins} onPurchase={handlePurchase} />
+        <View>
+          <UpgradeShop coins={coins} onPurchase={handlePurchase} />
+          <Button title="🔙 Return to Hub" onPress={handleReturnToHub} />
+        </View>
       ) : currentView === 'Sell' ? (
-        <ShopStation journalEntries={journal} onSell={handleSell} />
+        <View>
+          <ShopStation journalEntries={journal} onSell={handleSell} />
+          <Button title="🔙 Return to Hub" onPress={handleReturnToHub} />
+        </View>
       ) : currentView === 'Vault' ? (
-        <MemoryVault journalEntries={journal} onRemix={handleRemix} />
+        <View>
+          <MemoryVault journalEntries={journal} onRemix={handleRemix} />
+          <Button title="🔙 Return to Hub" onPress={handleReturnToHub} />
+        </View>
       ) : (
-        <RoomLoader
-          emotion={currentView}
-          journalEntries={journal}
-          onFragmentRestore={handleFragmentRestore}
-        />
+        <View>
+          <RoomLoader
+            emotion={currentView}
+            journalEntries={journal}
+            onFragmentRestore={handleFragmentRestore}
+          />
+          <Button title="🔙 Return to Hub" onPress={handleReturnToHub} />
+        </View>
       )}
     </View>
   );
