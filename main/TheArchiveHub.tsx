@@ -3,7 +3,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import NavigationPanel from '../app/NavigationPanel';
 import StatusPanel from '../app/StatusPanel';
 import ViewRouter from '../app/ViewRouter';
-import { getUnlockedRooms } from '../app/core/RoomUnlockEngine';
 
 export default function TheArchiveHub() {
   const [currentView, setCurrentView] = useState<string | null>(null);
@@ -42,14 +41,14 @@ export default function TheArchiveHub() {
   };
 
   const level = Math.floor(xp / 100) + 1;
-  const unlockedRooms = getUnlockedRooms({ xp, upgrades, journal });
+  const emotionalRooms = ['Sadness', 'Inspiration', 'Numbness', 'Hope'];
 
   return (
     <View style={styles.container}>
       {!currentView ? (
         <>
           <Text style={styles.title}>🌌 The Archive Breathes</Text>
-          <NavigationPanel onNavigate={setCurrentView} unlockedRooms={unlockedRooms} />
+          <NavigationPanel onNavigate={setCurrentView} unlockedRooms={emotionalRooms} />
           <StatusPanel
             xp={xp}
             level={level}
