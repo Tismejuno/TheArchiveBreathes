@@ -1,18 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import RoomLoader from '../app/RoomLoader';
-import CafeStation from '../app/jobs/CafeStation';
-import BurgerStation from '../app/jobs/BurgerStation';
-import UpgradeShop from '../app/stations/UpgradeShop';
-import ShopStation from '../app/stations/ShopStation';
-import MemoryVault from '../app/stations/MemoryVault';
-import XPTracker from '../app/XPTracker';
-import CurrencyEngine from '../app/CurrencyEngine';
-import AmbientEngine from '../app/AmbientEngine';
-import EchoCompanion from '../app/EchoCompanion';
-import JournalSkinEngine from '../app/JournalSkinEngine';
-
-const emotions = ['Sadness', 'Inspiration', 'Numbness', 'Hope'];
+import { View, Text, StyleSheet } from 'react-native';
+import NavigationPanel from '../app/hub/NavigationPanel';
+import StatusPanel from '../app/hub/StatusPanel';
+import ViewRouter from '../app/hub/ViewRouter';
+import { getUnlockedRooms } from '../app/core/RoomUnlockEngine';
 
 export default function TheArchiveHub() {
   const [currentView, setCurrentView] = useState<string | null>(null);
@@ -51,61 +42,37 @@ export default function TheArchiveHub() {
   };
 
   const level = Math.floor(xp / 100) + 1;
+  const unlockedRooms = getUnlockedRooms({ xp, upgrades, journal });
 
   return (
     <View style={styles.container}>
       {!currentView ? (
         <>
           <Text style={styles.title}>🌌 The Archive Breathes</Text>
-          <Text style={styles.subtitle}>Choose where to go:</Text>
-          {emotions.map((emotion) => (
-            <Button key={emotion} title={`Room of ${emotion}`} onPress={() => setCurrentView(emotion)} />
-          ))}
-          <Button title="☕ Enter Cafe Station" onPress={() => setCurrentView('Cafe')} />
-          <Button title="🍔 Enter Burger Station" onPress={() => setCurrentView('Burger')} />
-          <Button title="🛍️ Visit Upgrade Shop" onPress={() => setCurrentView('Shop')} />
-          <Button title="🧾 Sell Fragments" onPress={() => setCurrentView('Sell')} />
-          <Button title="🧠 Enter Memory Vault" onPress={() => setCurrentView('Vault')} />
-          <XPTracker xp={xp} level={level} />
-          <CurrencyEngine coins={coins} />
-          <AmbientEngine upgrades={upgrades} />
-          <EchoCompanion journalEntries={journal} upgrades={upgrades} emotion={currentView} />
-          <JournalSkinEngine journalEntries={journal} upgrades={upgrades} />
-        </>
-      ) : currentView === 'Cafe' ? (
-        <View>
-          <CafeStation emotion="Comfort" onServe={handleServe} />
-          <Button title="🔙 Return to Hub" onPress={handleReturnToHub} />
-        </View>
-      ) : currentView === 'Burger' ? (
-        <View>
-          <BurgerStation emotion="Hope" onServe={handleServe} />
-          <Button title="🔙 Return to Hub" onPress={handleReturnToHub} />
-        </View>
-      ) : currentView === 'Shop' ? (
-        <View>
-          <UpgradeShop coins={coins} onPurchase={handlePurchase} />
-          <Button title="🔙 Return to Hub" onPress={handleReturnToHub} />
-        </View>
-      ) : currentView === 'Sell' ? (
-        <View>
-          <ShopStation journalEntries={journal} onSell={handleSell} />
-          <Button title="🔙 Return to Hub" onPress={handleReturnToHub} />
-        </View>
-      ) : currentView === 'Vault' ? (
-        <View>
-          <MemoryVault journalEntries={journal} onRemix={handleRemix} />
-          <Button title="🔙 Return to Hub" onPress={handleReturnToHub} />
-        </View>
-      ) : (
-        <View>
-          <RoomLoader
+          <NavigationPanel onNavigate={setCurrentView} unlockedRooms={unlockedRooms} />
+          <StatusPanel
+            xp={xp}
+            level={level}
+            coins={coins}
+            upgrades={upgrades}
+            journal={journal}
             emotion={currentView}
-            journalEntries={journal}
-            onFragmentRestore={handleFragmentRestore}
           />
-          <Button title="🔙 Return to Hub" onPress={handleReturnToHub} />
-        </View>
+        </>
+      ) : (
+        <ViewRouter
+          currentView={currentView}
+          onReturn={handleReturnToHub}
+          journal={journal}
+          upgrades={upgrades}
+          coins={coins}
+          xp={xp}
+          onServe={handleServe}
+          onPurchase={handlePurchase}
+          onSell={handleSell}
+          onRemix={handleRemix}
+          onFragmentRestore={handleFragmentRestore}
+        />
       )}
     </View>
   );
@@ -122,12 +89,6 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: '#eee',
     marginBottom: 10,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#aaa',
-    marginBottom: 20,
     textAlign: 'center',
   },
 });
