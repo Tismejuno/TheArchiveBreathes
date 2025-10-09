@@ -9,6 +9,7 @@ import MemoryVault from '../app/stations/MemoryVault';
 import XPTracker from '../app/XPTracker';
 import CurrencyEngine from '../app/CurrencyEngine';
 import AmbientEngine from '../app/AmbientEngine';
+import EchoCompanion from '../app/EchoCompanion'; // ✅ New import
 
 const emotions = ['Sadness', 'Inspiration', 'Numbness', 'Hope'];
 
@@ -63,6 +64,7 @@ export default function TheArchiveHub() {
           <XPTracker xp={xp} level={level} />
           <CurrencyEngine coins={coins} />
           <AmbientEngine upgrades={upgrades} />
+          <EchoCompanion journalEntries={journal} upgrades={upgrades} emotion={currentView} /> {/* ✅ New companion */}
         </>
       ) : currentView === 'Cafe' ? (
         <CafeStation emotion="Comfort" onServe={handleServe} />
