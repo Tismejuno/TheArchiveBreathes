@@ -1,27 +1,26 @@
-import { useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text } from 'react-native';
 import Journal from './Journal';
+import PuzzleEngine from './PuzzleEngine';
 
-export default function Fragment({ emotion }: { emotion: string }) {
+type Props = {
+  emotion: string;
+};
+
+export default function Fragment({ emotion }: Props) {
   const [restored, setRestored] = useState(false);
   const [choice, setChoice] = useState<string | null>(null);
-
-  const options = ['silence', 'light', 'echo'];
 
   return (
     <View>
       {!restored ? (
-        <>
-          <Text style={{ color: '#aaa', marginBottom: 10 }}>
-            “The sky forgot how to...”
-          </Text>
-          {options.map((word) => (
-            <Button key={word} title={word} onPress={() => {
-              setChoice(word);
-              setRestored(true);
-            }} />
-          ))}
-        </>
+        <PuzzleEngine
+          emotion={emotion}
+          onSolve={(selectedWord) => {
+            setChoice(selectedWord);
+            setRestored(true);
+          }}
+        />
       ) : (
         <>
           <Text style={{ color: '#ccc', marginTop: 20 }}>
