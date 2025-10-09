@@ -1,7 +1,11 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export default function Solace({ emotion }: { emotion: string }) {
+type Props = {
+  emotion: string;
+};
+
+export default function Solace({ emotion }: Props) {
   const lines: Record<string, string> = {
     Sadness: 'Sometimes, even silence has weight.',
     Inspiration: 'A spark doesn’t ask permission to shine.',
@@ -9,11 +13,11 @@ export default function Solace({ emotion }: { emotion: string }) {
     Hope: 'Even shadows stretch toward light.',
   };
 
+  const line = lines[emotion] || 'The Archive listens.';
+
   return (
     <View style={{ marginBottom: 20 }}>
-      <Text style={{ color: '#888', fontStyle: 'italic' }}>
-        {lines[emotion] || 'The Archive listens.'}
-      </Text>
+      <Text style={{ color: '#888', fontStyle: 'italic' }}>{line}</Text>
     </View>
   );
 }
