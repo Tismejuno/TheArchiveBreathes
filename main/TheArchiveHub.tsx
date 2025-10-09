@@ -4,6 +4,7 @@ import RoomLoader from '../app/RoomLoader';
 import CafeStation from '../app/jobs/CafeStation';
 import BurgerStation from '../app/jobs/BurgerStation';
 import UpgradeShop from '../app/stations/UpgradeShop';
+import ShopStation from '../app/stations/ShopStation';
 import XPTracker from '../app/XPTracker';
 import CurrencyEngine from '../app/CurrencyEngine';
 
@@ -30,6 +31,11 @@ export default function TheArchiveHub() {
     setJournal((prev) => [...prev, `Purchased ${item}`]);
   };
 
+  const handleSell = (entry: string, coinsEarned: number) => {
+    setCoins((prev) => prev + coinsEarned);
+    setJournal((prev) => [...prev, `Sold fragment: ${entry}`]);
+  };
+
   const level = Math.floor(xp / 100) + 1;
 
   return (
@@ -44,6 +50,7 @@ export default function TheArchiveHub() {
           <Button title="☕ Enter Cafe Station" onPress={() => setCurrentView('Cafe')} />
           <Button title="🍔 Enter Burger Station" onPress={() => setCurrentView('Burger')} />
           <Button title="🛍️ Visit Upgrade Shop" onPress={() => setCurrentView('Shop')} />
+          <Button title="🧾 Sell Fragments" onPress={() => setCurrentView('Sell')} />
           <XPTracker xp={xp} level={level} />
           <CurrencyEngine coins={coins} />
         </>
@@ -53,6 +60,8 @@ export default function TheArchiveHub() {
         <BurgerStation emotion="Hope" onServe={handleServe} />
       ) : currentView === 'Shop' ? (
         <UpgradeShop coins={coins} onPurchase={handlePurchase} />
+      ) : currentView === 'Sell' ? (
+        <ShopStation journalEntries={journal} onSell={handleSell} />
       ) : (
         <RoomLoader
           emotion={currentView}
