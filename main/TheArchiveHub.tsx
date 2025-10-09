@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import RoomLoader from '../app/RoomLoader';
 import CafeStation from '../app/jobs/CafeStation';
-import XPTracker from '../app/XPTracker'; // ✅ Add this import
+import BurgerStation from '../app/jobs/BurgerStation';
+import XPTracker from '../app/XPTracker';
 
 const emotions = ['Sadness', 'Inspiration', 'Numbness', 'Hope'];
 
@@ -32,10 +33,13 @@ export default function TheArchiveHub() {
             <Button key={emotion} title={`Room of ${emotion}`} onPress={() => setCurrentView(emotion)} />
           ))}
           <Button title="☕ Enter Cafe Station" onPress={() => setCurrentView('Cafe')} />
-          <XPTracker xp={xp} level={level} /> {/* ✅ Add tracker here */}
+          <Button title="🍔 Enter Burger Station" onPress={() => setCurrentView('Burger')} />
+          <XPTracker xp={xp} level={level} />
         </>
       ) : currentView === 'Cafe' ? (
         <CafeStation emotion="Comfort" onServe={handleServe} />
+      ) : currentView === 'Burger' ? (
+        <BurgerStation emotion="Hope" onServe={handleServe} />
       ) : (
         <RoomLoader
           emotion={currentView}
