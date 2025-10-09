@@ -1,4 +1,9 @@
 import { View, Text } from 'react-native';
+import RoomLoader from '../app/RoomLoader';
+
+export default function TheArchiveHub() {
+  return <RoomLoader emotion="Sadness" />;
+}
 
 export default function TheArchiveHub() {
   return (
