@@ -3,6 +3,7 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import RoomLoader from '../app/RoomLoader';
 import CafeStation from '../app/jobs/CafeStation';
 import BurgerStation from '../app/jobs/BurgerStation';
+import UpgradeShop from '../app/stations/UpgradeShop';
 import XPTracker from '../app/XPTracker';
 import CurrencyEngine from '../app/CurrencyEngine';
 
@@ -24,6 +25,11 @@ export default function TheArchiveHub() {
     setCoins((prev) => prev + Math.floor(earnedXp / 2)); // 1 coin per 2 XP
   };
 
+  const handlePurchase = (item: string, cost: number) => {
+    setCoins((prev) => prev - cost);
+    setJournal((prev) => [...prev, `Purchased ${item}`]);
+  };
+
   const level = Math.floor(xp / 100) + 1;
 
   return (
@@ -37,6 +43,7 @@ export default function TheArchiveHub() {
           ))}
           <Button title="☕ Enter Cafe Station" onPress={() => setCurrentView('Cafe')} />
           <Button title="🍔 Enter Burger Station" onPress={() => setCurrentView('Burger')} />
+          <Button title="🛍️ Visit Upgrade Shop" onPress={() => setCurrentView('Shop')} />
           <XPTracker xp={xp} level={level} />
           <CurrencyEngine coins={coins} />
         </>
@@ -44,6 +51,8 @@ export default function TheArchiveHub() {
         <CafeStation emotion="Comfort" onServe={handleServe} />
       ) : currentView === 'Burger' ? (
         <BurgerStation emotion="Hope" onServe={handleServe} />
+      ) : currentView === 'Shop' ? (
+        <UpgradeShop coins={coins} onPurchase={handlePurchase} />
       ) : (
         <RoomLoader
           emotion={currentView}
