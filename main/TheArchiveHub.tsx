@@ -4,6 +4,7 @@ import RoomLoader from '../app/RoomLoader';
 import CafeStation from '../app/jobs/CafeStation';
 import BurgerStation from '../app/jobs/BurgerStation';
 import XPTracker from '../app/XPTracker';
+import CurrencyEngine from '../app/CurrencyEngine';
 
 const emotions = ['Sadness', 'Inspiration', 'Numbness', 'Hope'];
 
@@ -11,6 +12,7 @@ export default function TheArchiveHub() {
   const [currentView, setCurrentView] = useState<string | null>(null);
   const [journal, setJournal] = useState<string[]>([]);
   const [xp, setXp] = useState<number>(0);
+  const [coins, setCoins] = useState<number>(0);
 
   const handleFragmentRestore = (entry: string) => {
     setJournal((prev) => [...prev, entry]);
@@ -19,6 +21,7 @@ export default function TheArchiveHub() {
   const handleServe = (entry: string, earnedXp: number) => {
     setJournal((prev) => [...prev, entry]);
     setXp((prev) => prev + earnedXp);
+    setCoins((prev) => prev + Math.floor(earnedXp / 2)); // 1 coin per 2 XP
   };
 
   const level = Math.floor(xp / 100) + 1;
@@ -35,6 +38,7 @@ export default function TheArchiveHub() {
           <Button title="☕ Enter Cafe Station" onPress={() => setCurrentView('Cafe')} />
           <Button title="🍔 Enter Burger Station" onPress={() => setCurrentView('Burger')} />
           <XPTracker xp={xp} level={level} />
+          <CurrencyEngine coins={coins} />
         </>
       ) : currentView === 'Cafe' ? (
         <CafeStation emotion="Comfort" onServe={handleServe} />
