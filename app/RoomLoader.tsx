@@ -1,8 +1,13 @@
+import React from 'react';
 import { View, Text } from 'react-native';
 import Fragment from './Fragment';
 import Solace from './Solace';
 
-export default function RoomLoader({ emotion }: { emotion: string }) {
+type Props = {
+  emotion: string;
+};
+
+export default function RoomLoader({ emotion }: Props) {
   return (
     <View style={{ flex: 1, backgroundColor: '#1a1a1a', padding: 20 }}>
       <Solace emotion={emotion} />
