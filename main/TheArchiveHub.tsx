@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import NavigationPanel from '../app/hub/NavigationPanel';
-import StatusPanel from '../app/hub/StatusPanel';
-import ViewRouter from '../app/hub/ViewRouter';
+import NavigationPanel from '../app/NavigationPanel';
+import StatusPanel from '../app/StatusPanel';
+import ViewRouter from '../app/ViewRouter';
 import { getUnlockedRooms } from '../app/core/RoomUnlockEngine';
 
 export default function TheArchiveHub() {
