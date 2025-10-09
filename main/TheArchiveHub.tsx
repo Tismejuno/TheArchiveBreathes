@@ -5,6 +5,7 @@ import CafeStation from '../app/jobs/CafeStation';
 import BurgerStation from '../app/jobs/BurgerStation';
 import UpgradeShop from '../app/stations/UpgradeShop';
 import ShopStation from '../app/stations/ShopStation';
+import MemoryVault from '../app/stations/MemoryVault';
 import XPTracker from '../app/XPTracker';
 import CurrencyEngine from '../app/CurrencyEngine';
 import AmbientEngine from '../app/AmbientEngine';
@@ -25,7 +26,7 @@ export default function TheArchiveHub() {
   const handleServe = (entry: string, earnedXp: number) => {
     setJournal((prev) => [...prev, entry]);
     setXp((prev) => prev + earnedXp);
-    setCoins((prev) => prev + Math.floor(earnedXp / 2)); // 1 coin per 2 XP
+    setCoins((prev) => prev + Math.floor(earnedXp / 2));
   };
 
   const handlePurchase = (item: string, cost: number) => {
@@ -37,6 +38,10 @@ export default function TheArchiveHub() {
   const handleSell = (entry: string, coinsEarned: number) => {
     setCoins((prev) => prev + coinsEarned);
     setJournal((prev) => [...prev, `Sold fragment: ${entry}`]);
+  };
+
+  const handleRemix = (entry: string) => {
+    setJournal((prev) => [...prev, entry]);
   };
 
   const level = Math.floor(xp / 100) + 1;
@@ -54,6 +59,7 @@ export default function TheArchiveHub() {
           <Button title="🍔 Enter Burger Station" onPress={() => setCurrentView('Burger')} />
           <Button title="🛍️ Visit Upgrade Shop" onPress={() => setCurrentView('Shop')} />
           <Button title="🧾 Sell Fragments" onPress={() => setCurrentView('Sell')} />
+          <Button title="🧠 Enter Memory Vault" onPress={() => setCurrentView('Vault')} />
           <XPTracker xp={xp} level={level} />
           <CurrencyEngine coins={coins} />
           <AmbientEngine upgrades={upgrades} />
@@ -66,6 +72,8 @@ export default function TheArchiveHub() {
         <UpgradeShop coins={coins} onPurchase={handlePurchase} />
       ) : currentView === 'Sell' ? (
         <ShopStation journalEntries={journal} onSell={handleSell} />
+      ) : currentView === 'Vault' ? (
+        <MemoryVault journalEntries={journal} onRemix={handleRemix} />
       ) : (
         <RoomLoader
           emotion={currentView}
