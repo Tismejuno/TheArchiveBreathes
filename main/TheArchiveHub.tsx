@@ -7,6 +7,7 @@ import UpgradeShop from '../app/stations/UpgradeShop';
 import ShopStation from '../app/stations/ShopStation';
 import XPTracker from '../app/XPTracker';
 import CurrencyEngine from '../app/CurrencyEngine';
+import AmbientEngine from '../app/AmbientEngine';
 
 const emotions = ['Sadness', 'Inspiration', 'Numbness', 'Hope'];
 
@@ -15,6 +16,7 @@ export default function TheArchiveHub() {
   const [journal, setJournal] = useState<string[]>([]);
   const [xp, setXp] = useState<number>(0);
   const [coins, setCoins] = useState<number>(0);
+  const [upgrades, setUpgrades] = useState<string[]>([]);
 
   const handleFragmentRestore = (entry: string) => {
     setJournal((prev) => [...prev, entry]);
@@ -28,6 +30,7 @@ export default function TheArchiveHub() {
 
   const handlePurchase = (item: string, cost: number) => {
     setCoins((prev) => prev - cost);
+    setUpgrades((prev) => [...prev, item]);
     setJournal((prev) => [...prev, `Purchased ${item}`]);
   };
 
@@ -53,6 +56,7 @@ export default function TheArchiveHub() {
           <Button title="🧾 Sell Fragments" onPress={() => setCurrentView('Sell')} />
           <XPTracker xp={xp} level={level} />
           <CurrencyEngine coins={coins} />
+          <AmbientEngine upgrades={upgrades} />
         </>
       ) : currentView === 'Cafe' ? (
         <CafeStation emotion="Comfort" onServe={handleServe} />
