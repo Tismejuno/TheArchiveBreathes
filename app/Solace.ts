@@ -1,4 +1,5 @@
-import { Text } from 'react-native';
+import React from 'react';
+import { View, Text } from 'react-native';
 
 export default function Solace({ emotion }: { emotion: string }) {
   const lines: Record<string, string> = {
@@ -9,8 +10,10 @@ export default function Solace({ emotion }: { emotion: string }) {
   };
 
   return (
-    <Text style={{ color: '#888', fontStyle: 'italic', marginBottom: 20 }}>
-      {lines[emotion] || 'The Archive listens.'}
-    </Text>
+    <View style={{ marginBottom: 20 }}>
+      <Text style={{ color: '#888', fontStyle: 'italic' }}>
+        {lines[emotion] || 'The Archive listens.'}
+      </Text>
+    </View>
   );
 }
