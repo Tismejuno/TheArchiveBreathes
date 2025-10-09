@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import RoomLoader from '../app/RoomLoader';
 import CafeStation from '../app/jobs/CafeStation';
+import XPTracker from '../app/XPTracker'; // ✅ Add this import
 
 const emotions = ['Sadness', 'Inspiration', 'Numbness', 'Hope'];
 
@@ -19,6 +20,8 @@ export default function TheArchiveHub() {
     setXp((prev) => prev + earnedXp);
   };
 
+  const level = Math.floor(xp / 100) + 1;
+
   return (
     <View style={styles.container}>
       {!currentView ? (
@@ -29,6 +32,7 @@ export default function TheArchiveHub() {
             <Button key={emotion} title={`Room of ${emotion}`} onPress={() => setCurrentView(emotion)} />
           ))}
           <Button title="☕ Enter Cafe Station" onPress={() => setCurrentView('Cafe')} />
+          <XPTracker xp={xp} level={level} /> {/* ✅ Add tracker here */}
         </>
       ) : currentView === 'Cafe' ? (
         <CafeStation emotion="Comfort" onServe={handleServe} />
@@ -39,7 +43,6 @@ export default function TheArchiveHub() {
           onFragmentRestore={handleFragmentRestore}
         />
       )}
-      <Text style={styles.xp}>XP: {xp}</Text>
     </View>
   );
 }
@@ -62,12 +65,5 @@ const styles = StyleSheet.create({
     color: '#aaa',
     marginBottom: 20,
     textAlign: 'center',
-  },
-  xp: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-    color: '#ccc',
-    fontSize: 14,
   },
 });
